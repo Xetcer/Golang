@@ -1,2 +1,3 @@
 # Golang
 GoLangExamples
+Тестируем репозиторий
