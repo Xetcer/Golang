@@ -46,6 +46,51 @@ func List4() {
 	fmt.Println("Исходный срез:", planets)
 }
 
+// List5 предварительное выделение срезов
+func List5() {
+	dwarfs := make([]string, 0, 10) // Объявляем срез типа стрнг, в 10 элеменвтов каждый из которых 0 длины
+	fmt.Println("объявленный массив", dwarfs)
+	dwarfs = append(dwarfs, "Церера", "Плутно", "Хаумеа", "Макемаке", "Эрида")
+	fmt.Println("Добавляем элементы", dwarfs)
+}
+
+// List6Terraform вариативная функция
+func List6Terraform(prefix string, worlds ...string) []string {
+
+	newWorlds := make([]string, len(worlds)) // Создаем новый срез вместо прямого изменения worlds
+	for i := range worlds {
+		newWorlds[i] = prefix + " " + worlds[i]
+	}
+	return newWorlds
+}
+
+// List6 функция для раскрытия функционала вариативных функций
+func List6() {
+	fmt.Println("Листинг 6")
+	twoWorlds := List6Terraform("Нью", "Венера", "Марс")
+	fmt.Println("Создаем новые планеты", twoWorlds)
+	planets := []string{"Венера", "Марс", "Юпитер"}
+	fmt.Println("Передаем срез в качестве аргумента", planets)
+	newPlanets := List6Terraform("New", planets...)
+	fmt.Println("новые миры", newPlanets)
+}
+
+//  controlWork создаем срез и добавляем в него maxCycles элементов
+func controlWork(maxCycles int) {
+	slice := []string{}    // пустой срез
+	sliceCap := cap(slice) // Вместимость среза
+	sliceLen := len(slice) // число элементов среза
+	fmt.Println("Исходная вместимость:", sliceCap, "Исходная длина:", sliceLen)
+	for i := 0; i < maxCycles; i++ {
+		slice = append(slice, "+ Элемент")
+		if sliceCap != cap(slice) {
+			sliceCap = cap(slice)
+			sliceLen = len(slice)
+			fmt.Println("Вместимость увеличина до:", sliceCap, "Число элементов:", sliceLen)
+		}
+	}
+}
+
 func main() {
 	fmt.Println("Lesson 19")
 	List1()
@@ -54,4 +99,7 @@ func main() {
 	List2dump("dwarfs [1:2]", dwarfs[1:2])
 	List3()
 	List4()
+	List5()
+	List6()
+	controlWork(200)
 }
