@@ -140,7 +140,7 @@ func main() {
 	frequency := ControlWork(text)
 	for word, count := range frequency {
 		if count > 1 {
-			fmt.Printf("Слово %v встречается %v раз(а) \n", word, count)
+			fmt.Printf("Слово %v встречается %v раз(аит) \n", word, count)
 		}
 	}
 
