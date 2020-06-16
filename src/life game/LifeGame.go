@@ -1,3 +1,4 @@
+// https://golangs.org/game-life
 package main
 
 import (
