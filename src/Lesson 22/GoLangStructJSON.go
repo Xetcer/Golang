@@ -1,7 +1,11 @@
 // Ссылка на урок https://golangs.org/struct
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
 
 // List1 описание функций листинга 1
 func List1() {
@@ -65,8 +69,82 @@ func List6() {
 	bradbary := location{lat: -4.8595, long: 137.4414}
 	curiosity := bradbary
 	curiosity.long += 0.0106
-
 	fmt.Printf("Координты кратера бредбери %+v, координаты марсохода %+v\n", bradbary, curiosity)
+}
+
+// List78 срезы в структурах
+func List78() {
+	fmt.Println("Листинг 7 срез стурктур")
+	type location struct {
+		name string
+		lat  float64
+		long float64
+	}
+	// создаем срез структур
+	locations := []location{
+		{name: "Bradbary Landing", lat: -4.5895, long: 137.4417},
+		{name: "Columbia memorial station", lat: -14.5684, long: 175.472636},
+		{name: "Challenger memorial station", lat: -1.9462, long: 354.4734},
+	}
+	fmt.Printf("%+v\n", locations)
+}
+
+// List9 кодирование структур в JSON
+func List9() {
+	fmt.Println("Листинг 9 конвертируем в формат JSON")
+	type location struct {
+		Lat, Long float64 // Поля должны начинаться с большой буквы
+	}
+
+	curiosity := location{Lat: -4.5895, Long: 137.4417}
+	bytes, err := json.Marshal(curiosity)
+	exitOnError(err)
+	fmt.Println(string(bytes))
+}
+
+// exitOnError выводит любые ошибки и выходит
+func exitOnError(err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+
+// List10 изменение JSON через теги struct в Golang
+func List10() {
+	fmt.Println("Листинг 10 изменение JSON через теги struct в Go")
+	type location struct {
+		// теги в struct меяют вывод
+		Lat  float64 `json:"latitude"`
+		Long float64 `json:"longitude"`
+	}
+	curiosity := location{Lat: -4.5895, Long: 137.4417}
+
+	bytes, err := json.Marshal(curiosity)
+	exitOnError(err)
+	fmt.Println(string(bytes))
+}
+
+// CtrlWork итоговое задание
+func CtrlWork() {
+	fmt.Println("Контрольное задание")
+	type location struct {
+		Name  string  `json:"Name"`
+		Place string  `json:"Place"`
+		Lat   float64 `json:"Latitude"`
+		Long  float64 `json:"Longitude"`
+	}
+	// создаем срез структур
+	locations := []location{
+		{Name: "Curiosity", Place: "Bradbary Landing", Lat: -4.5895, Long: 137.4417},
+		{Name: "Xetzer1", Place: "Columbia memorial station", Lat: -14.5684, Long: 175.472636},
+		{Name: "Xetzer2", Place: "Challenger memorial station", Lat: -1.9462, Long: 354.4734},
+	}
+	for i := range locations {
+		bytes, err := json.Marshal(locations[i])
+		exitOnError(err)
+		fmt.Println(string(bytes))
+	}
 }
 
 func main() {
@@ -75,4 +153,8 @@ func main() {
 	List2()
 	List345()
 	List6()
+	List78()
+	List9()
+	List10()
+	CtrlWork()
 }
