@@ -197,7 +197,7 @@ func (c coordinate) MarshalJSON() ([]byte, error) {
 }
 
 type locationCW struct {
-	Name string     `json: "name"`
+	Name string     `json:"name"`
 	Lat  coordinate `json:"latitude"`
 	Long coordinate `json:"longitude"`
 }
