@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 type cow struct {
@@ -71,7 +72,7 @@ func (d dog) move() string {
 		return "лежит"
 	case 4:
 		return "спит"
-	case 5:
+	default:
 		return "воет на солнце"
 	}
 }
@@ -83,6 +84,45 @@ type animal interface {
 	move() string
 }
 
+// action действие животного /кормление или действие
+func action(a animal) {
+	switch rand.Intn(2) {
+	case 0:
+		fmt.Printf("%v %v. \n", a.respond(), a.move())
+	default:
+		fmt.Printf("%v кушает %v. \n", a.respond(), a.eat())
+	}
+}
+
+const sunrise, sunset = 8, 18
+
 func main() {
 	fmt.Println("Марсианская ферма")
+	rand.Seed(time.Now().UnixNano())
+	animals := []animal{
+		cow{name: "Корова Василиса"},
+		dog{name: "Собака Артем"},
+	}
+
+	var sol, hour int
+	for {
+		fmt.Printf("%2d:00 ", hour)
+		if hour < sunrise || hour >= sunset {
+			fmt.Println("Все спят")
+		} else {
+			i := rand.Intn(len(animals))
+			action(animals[i])
+		}
+
+		time.Sleep(500 * time.Millisecond)
+		hour++
+		if hour >= 24 {
+			hour = 0
+			sol++
+			if sol >= 3 {
+				break
+			}
+
+		}
+	}
 }
