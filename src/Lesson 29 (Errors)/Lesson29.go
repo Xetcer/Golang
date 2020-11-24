@@ -100,7 +100,7 @@ func proverbsList5(name string) error {
 	return sw.err // Возвращает ошибку в случае ее возникновения
 }
 
-// Новые ошибки в Golang
+// Новые ошибки в Golang листинг 7-10
 const rows, columns = 9, 9
 
 //Grid сетка судоку
@@ -126,6 +126,28 @@ func inBounds(row, column int) bool {
 	return true
 }
 
+// Причины каждой ошибки в Go листинг 11-13
+// Объявление ошибки
+var (
+	ErrBounds = errors.New("out of bounds")
+	ErrDigit  = errors.New("invslid digit")
+)
+
+// Set1 метод который возвращает объявленную заранее ошибку
+func (g *Grid) Set1(row, column int, digit int8) error {
+	if !inBounds(row, column) {
+		return ErrBounds
+	}
+	g[row][column] = digit
+	return nil
+}
+
+// Листинг 14 настраиваемые типы ошибок в Go
+// интерфейс который можно использовать для описания любых ошибок
+type error interface {
+	Error() string
+}
+
 func main() {
 	fmt.Println("Ошибки в Go")
 	List1()
@@ -137,6 +159,17 @@ func main() {
 	err := g.Set(10, 0, 5)
 	if err != nil {
 		fmt.Printf("Ошибка: %v. \n", err)
-		os.Exit(1)
 	}
+	// Объявление ошибок пример
+	fmt.Println("Листинг 11- 13 объявление своих ошибок в Go")
+	err1 := g.Set1(0, 0, 15)
+	if err1 != nil {
+		switch err1 {
+		case ErrBounds, ErrDigit:
+			fmt.Println("Возникли ошибки которые были объявлены")
+		default:
+			fmt.Println(err1)
+		}
+	}
+	os.Exit(1)
 }
