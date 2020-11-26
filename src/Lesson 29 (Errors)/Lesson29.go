@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 // List1 Листинг 1
@@ -133,6 +134,11 @@ var (
 	ErrDigit  = errors.New("invslid digit")
 )
 
+// validDigit проверка что число не выходит за диапазон
+func validDigit(digit int8) bool {
+	return digit >= 1 && digit <= 9
+}
+
 // Set1 метод который возвращает объявленную заранее ошибку
 func (g *Grid) Set1(row, column int, digit int8) error {
 	if !inBounds(row, column) {
@@ -144,8 +150,38 @@ func (g *Grid) Set1(row, column int, digit int8) error {
 
 // Листинг 14 настраиваемые типы ошибок в Go
 // интерфейс который можно использовать для описания любых ошибок
-type error interface {
-	Error() string
+// type error interface {
+// 	Error() string
+// }
+
+// Листинг 15 Множество ошибок в Go
+
+// SudokuError массив ошибок
+type SudokuError []error
+
+//Error возвращает одну или несколько ошибок через запятые
+func (se SudokuError) Error() string {
+	var s []string
+	for _, err := range se {
+		s = append(s, err.Error()) // конвертирует ошибки в строки
+	}
+	return strings.Join(s, ", ")
+}
+
+// Set2 проверка на множество ошибок
+func (g *Grid) Set2(row, column int, digit int8) error {
+	var errs SudokuError
+	if !inBounds(row, column) {
+		errs = append(errs, ErrBounds)
+	}
+	if !validDigit(digit) {
+		errs = append(errs, ErrDigit)
+	}
+	if len(errs) > 0 {
+		return errs
+	}
+	g[row][column] = digit
+	return nil
 }
 
 func main() {
@@ -169,6 +205,17 @@ func main() {
 			fmt.Println("Возникли ошибки которые были объявлены")
 		default:
 			fmt.Println(err1)
+		}
+	}
+
+	fmt.Println("Листинг 15-16 множество ошибок в Go")
+	err2 := g.Set2(0, 0, 15)
+	if err2 != nil {
+		switch err2 {
+		case ErrBounds, ErrDigit:
+			fmt.Println("Возникли ошибки которые были объявлены")
+		default:
+			fmt.Println(err2)
 		}
 	}
 	os.Exit(1)
