@@ -131,7 +131,7 @@ func inBounds(row, column int) bool {
 // Объявление ошибки
 var (
 	ErrBounds = errors.New("out of bounds")
-	ErrDigit  = errors.New("invslid digit")
+	ErrDigit  = errors.New("invalid digit")
 )
 
 // validDigit проверка что число не выходит за диапазон
@@ -216,6 +216,17 @@ func main() {
 			fmt.Println("Возникли ошибки которые были объявлены")
 		default:
 			fmt.Println(err2)
+		}
+	}
+
+	fmt.Println("Листинг 17 утверждение ошибок в Go")
+	err3 := g.Set2(10, 0, 15)
+	if err != nil {
+		if errs, ok := err3.(SudokuError); ok {
+			fmt.Printf("%d error(s) occurred:\n", len(errs))
+			for _, e := range errs {
+				fmt.Printf("- %v\n", e)
+			}
 		}
 	}
 	os.Exit(1)
