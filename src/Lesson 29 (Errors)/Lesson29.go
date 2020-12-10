@@ -229,5 +229,14 @@ func main() {
 			}
 		}
 	}
-	os.Exit(1)
+	// os.Exit(1)
+	//func анонимная функция
+	fmt.Println("Листинг 18 тонкости работы panic в Go")
+	defer func() {
+		if e := recover(); e != nil { // Приходим в себя после panic
+			fmt.Println(e) // Выводит: Я забыл свое полотенце
+		}
+	}()
+	panic("Я забыл свое полотенце") // приводит к panic
+
 }
