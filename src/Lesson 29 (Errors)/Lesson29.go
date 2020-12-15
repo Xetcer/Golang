@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/url"
 	"os"
 	"strings"
 )
@@ -184,6 +185,24 @@ func (g *Grid) Set2(row, column int, digit int8) error {
 	return nil
 }
 
+// ctrlWork контрольное задание
+func ctrlWork() {
+	fmt.Println("Контрольное задание, парсинг URL")
+	u, err := url.Parse("https://a b.com/")
+
+	if err != nil {
+		fmt.Println(err) // Выводит ошибку
+		fmt.Printf("%#v\n", err)
+		if e, ok := err.(*url.Error); ok {
+			fmt.Println("Op:", e.Op)
+			fmt.Println("URL:", e.URL)
+			fmt.Println("Err:", e.Err)
+		}
+		// os.Exit(1)
+	}
+	fmt.Println(u)
+}
+
 func main() {
 	fmt.Println("Ошибки в Go")
 	List1()
@@ -230,6 +249,7 @@ func main() {
 		}
 	}
 	// os.Exit(1)
+	ctrlWork()
 	//func анонимная функция
 	fmt.Println("Листинг 18 тонкости работы panic в Go")
 	defer func() {
