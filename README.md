@@ -5,6 +5,7 @@ GoLangExamples
 Полезные ссылки:
 ===================
 1. [Настройки SSH ключей:](https://gist.github.com/sabonim/279498#file-ssh-txt)
+2. [Оформление ведения файла *.md](http://webdesign.ru.net/article/pravila-oformleniya-fayla-readmemd-na-github.html)
 
 Проблемы и решения:
 ===================
