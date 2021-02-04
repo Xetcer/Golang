@@ -12,3 +12,5 @@ GoLangExamples
 1. Проблема с дебагером в VS Code после обновления Go вида: 
 "VSCode debug error : Version of Delve is too old for this version of Go"
 Решение команда: go get -u github.com/go-delve/delve/cmd/dlv
+2. Удаление удаленной ветки команда: $ git push origin :Имя ветки
+3. Удаление локальной ветки команда: $ git branch -d Имя_ветки
