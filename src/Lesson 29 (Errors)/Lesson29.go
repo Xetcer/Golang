@@ -1,5 +1,6 @@
 //Урок 29 ошибки в Go
 // https://golangs.org/errors
+// Тестовая ветка
 package main
 
 import (
