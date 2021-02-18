@@ -7,9 +7,17 @@ package main
  */
 import (
 	"fmt"
+	"time"
 )
+
+// listOne листинг 1 запуск горутины
+func listOneGopher() {
+	time.Sleep(3 * time.Second) // гофер спит
+	fmt.Println("... snore ...")
+}
 
 func main() {
 	fmt.Println("Урок 30, горутины в Go")
-
+	go listOneGopher()          // начало горутины
+	time.Sleep(4 * time.Second) // Ожидаем когда гофер дас о себе знать.
 }
