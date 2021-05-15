@@ -7,6 +7,7 @@ package main
  */
 import (
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -37,6 +38,12 @@ func list4Gopher(id int, c chan int) {
 	c <- id // отправляем значение обратно в Main
 }
 
+// list6SleepyGopher
+func list6SleepyGopher(id int, c chan int) {
+	time.Sleep(time.Duration(rand.Intn(4000)) * time.Millisecond)
+	c <- id
+}
+
 func main() {
 	fmt.Println("Урок 30, горутины в Go")
 	fmt.Println("Листинг 1 создание гофера")
@@ -51,5 +58,33 @@ func main() {
 	for i := 0; i < 5; i++ {
 		gopherID := <-c // получаем значение из канала
 		fmt.Println("gopher ", gopherID, " has finished sleeping")
+	}
+	fmt.Println("Листинг 5 использование select в канале горутин")
+	timeout := time.After(4 * time.Second)
+	for i := 0; i < 5; i++ {
+		go list4Gopher(i, c)
+	}
+	for i := 0; i < 5; i++ {
+		select {
+		case gopherID := <-c: // ждет когда проснется гофер
+			fmt.Println("gopher", gopherID, " has finished sleeping")
+		case <-timeout: // Ждет окончания времени
+			fmt.Println("Мое терпение закончислось")
+			return
+		}
+	}
+	fmt.Println("Листинг 6 ограничение выполнения опреации старт в ", time.Now())
+	for i := 0; i < 5; i++ {
+		go list6SleepyGopher(i, c) // запускаем гофер с рандомным временем выполнения
+		for i := 0; i < 5; i++ {
+			select {
+			case gopherID := <-c: // ждет когда проснется гофер
+				fmt.Println("гофер ", gopherID, " завершил выполнение в ", time.Now())
+				// fmt.Println("gopher", gopherID, " has finished sleeping")
+			case <-timeout: // Ждет окончания времени
+				fmt.Println("Мое терпение закончислось")
+				return
+			}
+		}
 	}
 }
